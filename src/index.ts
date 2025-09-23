@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, Collection } from "discord.js"
+import { Client, GatewayIntentBits, Collection, ActivityType } from "discord.js"
 import { config } from "./config"
 import { commands as commandModules } from "./commands"
 import type {
@@ -20,7 +20,7 @@ const client = new Client({
     activities: [
       {
         name: "PokéFarm Q",
-        type: 0,
+        type: ActivityType.Playing,
       },
     ],
   },
