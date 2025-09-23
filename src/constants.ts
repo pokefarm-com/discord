@@ -46,58 +46,58 @@ export function getRoleId(roleName: string): string {
 
 /**
  * Get a Discord user ID from environment variables
- * @param userId - The environment variable name for the user ID
+ * @param userName - The environment variable name for the user ID
  * @returns The user ID as a string
  * @throws Error if the environment variable is not found
  */
-export function getUserId(userId: string): string {
-  const id = process.env["USERS_" + userId.toUpperCase()]
-  if (!id) {
-    throw new Error(`User ID not found for: ${userId}`)
+export function getUserId(userName: string): string {
+  const userId = process.env["USERS_" + userName.toUpperCase()]
+  if (!userId) {
+    throw new Error(`User ID not found for: ${userName}`)
   }
-  return id
+  return userId
 }
 
 export const CATEGORIES = {
-  CHATOT: getCategoryId('CHATOT'),
-  PUBLIC: getCategoryId('PUBLIC'),
-  WIKI: getCategoryId('WIKI'),
+  CHATOT: getCategoryId("CHATOT"),
+  PUBLIC: getCategoryId("PUBLIC"),
+  WIKI: getCategoryId("WIKI"),
 } as const
 
 export const CHANNELS = {
-  AUTOMOD: getChannelId('AUTOMOD'),
-  CHATOTCHATTER: getChannelId('CHATOTCHATTER'),
-  CHATREPORTS: getChannelId('CHATREPORTS'),
-  CHATREQUESTS: getChannelId('CHATREQUESTS'),
-  CHATWARNINGS: getChannelId('CHATWARNINGS'),
-  OFFICIAL: getChannelId('OFFICIAL'),
-  PKRSNOTIFICATIONS: getChannelId('PKRSNOTIFICATIONS'),
-  RULES: getChannelId('RULES'),
-  STAFFNOTICEBOARD: getChannelId('STAFFNOTICEBOARD'),
-  SYSTEMLOG: getChannelId('SYSTEMLOG'),
-  WELCOME: getChannelId('WELCOME'), 
+  AUTOMOD: getChannelId("AUTOMOD"),
+  CHATOTCHATTER: getChannelId("CHATOTCHATTER"),
+  CHATREPORTS: getChannelId("CHATREPORTS"),
+  CHATREQUESTS: getChannelId("CHATREQUESTS"),
+  CHATWARNINGS: getChannelId("CHATWARNINGS"),
+  OFFICIAL: getChannelId("OFFICIAL"),
+  PKRSNOTIFICATIONS: getChannelId("PKRSNOTIFICATIONS"),
+  RULES: getChannelId("RULES"),
+  STAFFNOTICEBOARD: getChannelId("STAFFNOTICEBOARD"),
+  SYSTEMLOG: getChannelId("SYSTEMLOG"),
+  WELCOME: getChannelId("WELCOME"),
 } as const
 
 export const ROLES = {
-  ADMIN: getRoleId('ADMIN'),
-  DEVSTREAMPING: getRoleId('DEVSTREAMPING'),
-  EMBARGO: getRoleId('EMBARGO'),
-  GAMESTREAMPING: getRoleId('GAMESTREAMPING'),
-  GUEST: getRoleId('GUEST'),
-  HYPERMODE: getRoleId('HYPERMODE'),
-  MANAGER: getRoleId('MANAGER'),
-  NITROBOOSTER: getRoleId('NITROBOOSTER'),
-  PINGDISABLED: getRoleId('PINGDISABLED'),
-  PINGENABLED: getRoleId('PINGENABLED'),
-  PINGIFACTIVE: getRoleId('PINGIFACTIVE'),
-  PINGPLEASE: getRoleId('PINGPLEASE'),
-  REPORTS: getRoleId('REPORTS'),
-  STAFF: getRoleId('STAFF'),
-  WIKIEDITORS: getRoleId('WIKIEDITORS'),
+  ADMIN: getRoleId("ADMIN"),
+  DEVSTREAMPING: getRoleId("DEVSTREAMPING"),
+  EMBARGO: getRoleId("EMBARGO"),
+  GAMESTREAMPING: getRoleId("GAMESTREAMPING"),
+  GUEST: getRoleId("GUEST"),
+  HYPERMODE: getRoleId("HYPERMODE"),
+  MANAGER: getRoleId("MANAGER"),
+  NITROBOOSTER: getRoleId("NITROBOOSTER"),
+  PINGDISABLED: getRoleId("PINGDISABLED"),
+  PINGENABLED: getRoleId("PINGENABLED"),
+  PINGINACTIVE: getRoleId("PINGINACTIVE"),
+  PINGPLEASE: getRoleId("PINGPLEASE"),
+  REPORTS: getRoleId("REPORTS"),
+  STAFF: getRoleId("STAFF"),
+  WIKIEDITORS: getRoleId("WIKIEDITORS"),
 } as const
 
 export const USERS = {
-  HADES: getUserId('HADES'),
-  MOONS: getUserId('MOONS'),
-  NIET: getUserId('NIET'),
+  HADES: getUserId("HADES"),
+  MOONS: getUserId("MOONS"),
+  NIET: getUserId("NIET"),
 } as const
