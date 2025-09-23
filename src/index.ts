@@ -14,6 +14,16 @@ const client = new Client({
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.DirectMessages,
   ],
+
+  presence: {
+    status: "online",
+    activities: [
+      {
+        name: "PokéFarm Q",
+        type: 0,
+      },
+    ],
+  },
 })
 
 type CommandModule = {
@@ -50,4 +60,21 @@ client
 
 process.on("unhandledRejection", (error) => {
   console.error("Unhandled promise rejection:", error)
+})
+
+process.on("uncaughtException", (error) => {
+  console.error("Uncaught exception:", error)
+  process.exit(1)
+})
+
+process.on("SIGINT", () => {
+  console.log("Received SIGINT, shutting down gracefully...")
+  client.destroy()
+  process.exit(0)
+})
+
+process.on("SIGTERM", () => {
+  console.log("Received SIGTERM, shutting down gracefully...")
+  client.destroy()
+  process.exit(0)
 })
