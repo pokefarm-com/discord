@@ -4,16 +4,16 @@ Use this end-to-end checklist to port the C# PFQ-Bot to Node.js while preserving
 
 1. Project setup and tooling
 
-- [ ] Choose stack (recommended: `discord.js@14`, Node 18+, TypeScript, `ts-node` or build with `tsc`)
-- [ ] Repo scaffold, linting/formatting (`eslint`, `prettier`), commit hooks (optional)
-- [ ] Environment/config loader (`dotenv`, config module)
-- [ ] Map `Options/Keys.cs` into a Node config (dev vs prod IDs)
+- [x] Choose stack (recommended: `discord.js@14`, Node 18+, TypeScript, `ts-node` or build with `tsc`)
+- [x] Repo scaffold, linting/formatting (`eslint`, `prettier`), commit hooks (optional)
+- [x] Environment/config loader (`dotenv`, config module)
+- [x] Map `Options/Keys.cs` into a Node config (dev vs prod IDs)
 
 2. Discord client bootstrap
 
 - [ ] Instantiate client with intents: AllUnprivileged minus Invites/ScheduledEvents, plus `GuildMembers`, `MessageContent`
 - [ ] Partials if needed (messages, channels, reactions)
-- [ ] Login, ready lifecycle, shard-ready equivalent logs
+- [x] Login, ready lifecycle, shard-ready equivalent logs
 - [ ] Presence: Online, Playing “PokéFarm Q”
 
 3. Command registration framework
@@ -24,8 +24,7 @@ Use this end-to-end checklist to port the C# PFQ-Bot to Node.js while preserving
 
 4. HTTP server and static files
 
-- [ ] Add `express`/`fastify` app with `/health`, `/localization`, `/reports`, `/reportstats`
-- [ ] Serve `wwwroot/logs` at `/logs` and static files in `wwwroot/discord`
+- [ ] Add `express` app with `/health`, `/reports`, `/reportstats`
 
 5. Core helpers and utilities
 
