@@ -1,11 +1,12 @@
-import { Events, Client } from "discord.js"
-import { EventHandler } from "./types"
+import { Events } from "discord.js"
+import type { EventContext, EventHandler } from "./types"
+import { logger } from "../util/logger"
 
 const handler: EventHandler<"ready"> = {
   name: Events.ClientReady,
   once: true,
-  async execute(client: Client) {
-    console.log("Bot is connected as", client.user!.tag)
+  async execute(_client, { client }: EventContext) {
+    logger.info(`Bot is connected as ${client.user!.tag}`)
   },
 }
 

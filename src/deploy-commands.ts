@@ -1,56 +1,53 @@
-import { REST, Routes } from "discord.js"
+import {
+  REST,
+  Routes,
+  type RESTPostAPIChatInputApplicationCommandsJSONBody,
+} from "discord.js"
 import { config } from "./config"
 import { commands } from "./commands"
+import { logger } from "./util/logger"
 
-const commandsData = Object.values(commands).map((command) => command.data)
+const commandsData: RESTPostAPIChatInputApplicationCommandsJSONBody[] =
+  Object.values(commands).map((command) => command.data.toJSON())
 
 const rest = new REST().setToken(config.TOKEN)
 
-async function deleteAllCommands(route: any, scope: string, isGlobal: boolean) {
-  const existing = (await rest.get(route)) as any[]
-  if (existing.length > 0) {
-    console.log(`Deleting ${existing.length} existing ${scope} commands...`)
-    for (const cmd of existing) {
-      const deleteRoute = isGlobal
-        ? Routes.applicationCommand(config.CLIENT_ID, cmd.id)
-        : Routes.applicationGuildCommand(
-            config.CLIENT_ID,
-            config.GUILD_ID,
-            cmd.id,
-          )
-      await rest.delete(deleteRoute)
-    }
-    console.log(`All existing ${scope} commands deleted.`)
-  } else {
-    console.log(`No existing ${scope} commands to delete.`)
+async function registerCommands(route: string, scope: string) {
+  if (commandsData.length === 0) {
+    logger.warn(`No commands to register for ${scope}.`)
+    return
   }
-}
 
-async function registerCommands(route: any, commandsData: any, scope: string) {
+  logger.info(
+    `Registering ${commandsData.length} ${scope} command${
+      commandsData.length === 1 ? "" : "s"
+    }.`,
+  )
+
   await rest.put(route, {
     body: commandsData,
   })
-  console.log(`Registered new ${scope} commands.`)
+
+  logger.info(`Registered ${scope} commands.`)
 }
 
 export async function deployCommands(mode?: string) {
   const isProduction = mode === "--prod"
+  const scope = isProduction ? "global" : `guild ${config.GUILD_ID}`
+  const route = isProduction
+    ? Routes.applicationCommands(config.CLIENT_ID)
+    : Routes.applicationGuildCommands(config.CLIENT_ID, config.GUILD_ID)
+
   if (isProduction) {
-    // Register globally
-    const route = Routes.applicationCommands(config.CLIENT_ID)
-    console.log("--prod flag detected: Registering commands globally.")
-    await deleteAllCommands(route, "global", true)
-    await registerCommands(route, commandsData, "global")
+    logger.info("--prod flag detected: Registering commands globally.")
   } else {
-    // Register to guild only
-    const route = Routes.applicationGuildCommands(
-      config.CLIENT_ID,
-      config.GUILD_ID,
-    )
-    console.log(
-      "No --prod flag: Registering commands to guild " + config.GUILD_ID,
-    )
-    await deleteAllCommands(route, "guild", false)
-    await registerCommands(route, commandsData, "guild")
+    logger.info(`Registering commands to guild ${config.GUILD_ID}.`)
+  }
+
+  try {
+    await registerCommands(route, scope)
+  } catch (error) {
+    logger.error(`Failed to register ${scope} commands`, error)
+    throw error
   }
 }

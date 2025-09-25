@@ -1,5 +1,6 @@
-import * as ping from "./ping"
+import ping from "./ping"
+import type { CommandModule } from "./types"
 
-export const commands = {
-  ping,
+export const commands: Record<string, CommandModule> = {
+  [ping.data.name]: ping,
 }

@@ -9,11 +9,11 @@ dotenvConfig()
  * @throws Error if the environment variable is not found
  */
 export function getCategoryId(categoryName: string): string {
-  const id = process.env["CATEGORIES_" + categoryName.toUpperCase()]
-  if (!id) {
+  const categoryId = process.env["CATEGORIES_" + categoryName.toUpperCase()]
+  if (!categoryId) {
     throw new Error(`Category ID not found for: ${categoryName}`)
   }
-  return id
+  return categoryId
 }
 
 /**

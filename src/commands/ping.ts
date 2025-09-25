@@ -1,16 +1,26 @@
-import { SlashCommandBuilder, CommandInteraction } from "discord.js"
+import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js"
+import type { CommandModule } from "./types"
+import { logger } from "../util/logger"
 
 export const data = new SlashCommandBuilder()
   .setName("ping")
   .setDescription("Ping the bot.")
 
-export async function execute(interaction: CommandInteraction) {
+export const execute = async (interaction: ChatInputCommandInteraction) => {
   await interaction.deferReply()
   try {
     await interaction.editReply({
       content: "Pong!",
     })
-  } catch (err) {
-    console.error(err)
+  } catch (error) {
+    logger.error("Failed to respond to ping command", error)
   }
 }
+
+const command: CommandModule = {
+  data,
+  execute,
+}
+
+export default command
+

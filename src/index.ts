@@ -1,12 +1,10 @@
 import { Client, GatewayIntentBits, Collection, ActivityType } from "discord.js"
 import { config } from "./config"
 import { commands as commandModules } from "./commands"
-import type {
-  AutocompleteInteraction,
-  CommandInteraction,
-  SlashCommandBuilder,
-} from "discord.js"
 import events from "./events"
+import type { CommandModule } from "./commands/types"
+import type { EventContext } from "./events/types"
+import { logger } from "./util/logger"
 
 const client = new Client({
   intents: [
@@ -19,18 +17,12 @@ const client = new Client({
     status: "online",
     activities: [
       {
-        name: "PokéFarm Q",
-        type: ActivityType.Playing,
+        name: "chomping on PokéFarm Q",
+        type: ActivityType.Custom,
       },
     ],
   },
 })
-
-type CommandModule = {
-  data: SlashCommandBuilder
-  execute: (interaction: CommandInteraction) => Promise<any>
-  autocomplete: (interaction: AutocompleteInteraction) => Promise<any>
-}
 
 const commands = new Collection<string, CommandModule>()
 for (const commandName in commandModules) {
@@ -39,42 +31,47 @@ for (const commandName in commandModules) {
   }
 }
 
+const eventContext: EventContext = {
+  client,
+  commands,
+}
+
 for (const event of events) {
   if (event.once) {
     client.once(event.name, (...args) =>
-      event.execute(...args, client, commands),
+      event.execute(...args, eventContext),
     )
   } else {
-    client.on(event.name, (...args) => event.execute(...args, client, commands))
+    client.on(event.name, (...args) => event.execute(...args, eventContext))
   }
 }
 
 client
   .login(config.TOKEN)
   .then(() => {
-    console.log("Logged in successfully!")
+    logger.info("Logged in successfully!")
   })
   .catch((error) => {
-    console.error("Failed to log in:", error)
+    logger.error("Failed to log in", error)
   })
 
 process.on("unhandledRejection", (error) => {
-  console.error("Unhandled promise rejection:", error)
+  logger.error("Unhandled promise rejection", error)
 })
 
 process.on("uncaughtException", (error) => {
-  console.error("Uncaught exception:", error)
+  logger.error("Uncaught exception", error)
   process.exit(1)
 })
 
 process.on("SIGINT", () => {
-  console.log("Received SIGINT, shutting down gracefully...")
+  logger.info("Received SIGINT, shutting down gracefully...")
   client.destroy()
   process.exit(0)
 })
 
 process.on("SIGTERM", () => {
-  console.log("Received SIGTERM, shutting down gracefully...")
+  logger.info("Received SIGTERM, shutting down gracefully...")
   client.destroy()
   process.exit(0)
 })

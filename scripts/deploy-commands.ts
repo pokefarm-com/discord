@@ -1,16 +1,18 @@
 import { deployCommands } from "../src/deploy-commands"
+import { logger } from "../src/util/logger"
+
 ;(async () => {
   try {
     const mode = process.argv[2]
-    console.log(
-      "Deploying Discord commands to guild or globally...",
-      mode ? `Mode: ${mode}` : "",
+    logger.info(
+      "Deploying Discord commands...",
+      mode ? { mode } : undefined,
     )
     await deployCommands(mode)
-    console.log("Commands deployed successfully.")
+    logger.info("Commands deployed successfully.")
     process.exit(0)
-  } catch (err) {
-    console.error("Failed to deploy commands:", err)
+  } catch (error) {
+    logger.error("Failed to deploy commands", error)
     process.exit(1)
   }
 })()

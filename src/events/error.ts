@@ -1,14 +1,12 @@
 import { Events } from "discord.js"
-import { EventHandler } from "./types"
+import type { EventContext, EventHandler } from "./types"
+import { logger } from "../util/logger"
 
 const handler: EventHandler<"error"> = {
   name: Events.Error,
   once: false,
-  async execute(error: Error) {
-    console.error(`[ERROR] Discord client error:`, error)
-
-    console.error(`[ERROR] Error timestamp: ${new Date().toISOString()}`)
-    console.error(`[ERROR] Error stack:`, error.stack)
+  async execute(error: Error, _context: EventContext) {
+    logger.error("Discord client error", error)
   },
 }
 
