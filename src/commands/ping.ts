@@ -13,7 +13,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
       content: "Pong!",
     })
   } catch (error) {
-    logger.error("Failed to respond to ping command", error)
+    logger.error(interaction.client, "Failed to respond to ping command", error)
   }
 }
 
@@ -23,4 +23,3 @@ const command: CommandModule = {
 }
 
 export default command
-

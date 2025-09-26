@@ -17,5 +17,3 @@ export interface CommandModule {
   execute: CommandExecute
   autocomplete?: CommandAutocomplete
 }
-
-

@@ -2,7 +2,7 @@ import { Events, Interaction } from "discord.js"
 import type { EventContext, EventHandler } from "./types"
 import { logger } from "../util/logger"
 
-const handler: EventHandler<"interactionCreate"> = {
+const handler: EventHandler<Events.InteractionCreate> = {
   name: Events.InteractionCreate,
   async execute(interaction: Interaction, { commands }: EventContext) {
     if (!commands) return
@@ -14,7 +14,11 @@ const handler: EventHandler<"interactionCreate"> = {
         try {
           await command.execute(interaction)
         } catch (error) {
-          logger.error(`Error executing command ${commandName}`, error)
+          logger.error(
+            interaction.client,
+            `Error executing command ${commandName}`,
+            error,
+          )
         }
       }
     }
@@ -25,10 +29,17 @@ const handler: EventHandler<"interactionCreate"> = {
         try {
           await command.autocomplete(interaction)
         } catch (error) {
-          logger.error(`Error executing autocomplete ${commandName}`, error)
+          logger.error(
+            undefined,
+            `Error executing autocomplete ${commandName}`,
+            error,
+          )
         }
       } else {
-        logger.warn(`Received autocomplete for ${commandName} but handler missing`)
+        logger.warn(
+          undefined,
+          `Received autocomplete for ${commandName} but handler missing`,
+        )
       }
     }
   },

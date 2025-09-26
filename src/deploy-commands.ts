@@ -14,7 +14,7 @@ const rest = new REST().setToken(config.TOKEN)
 
 async function registerCommands(route: string, scope: string) {
   if (commandsData.length === 0) {
-    logger.warn(`No commands to register for ${scope}.`)
+    logger.warn(undefined, `No commands to register for ${scope}.`)
     return
   }
 
@@ -24,7 +24,7 @@ async function registerCommands(route: string, scope: string) {
     }.`,
   )
 
-  await rest.put(route, {
+  await rest.put(route as `/{string}`, {
     body: commandsData,
   })
 
@@ -47,7 +47,7 @@ export async function deployCommands(mode?: string) {
   try {
     await registerCommands(route, scope)
   } catch (error) {
-    logger.error(`Failed to register ${scope} commands`, error)
+    logger.error(undefined, `Failed to register ${scope} commands`, error)
     throw error
   }
 }

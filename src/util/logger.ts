@@ -1,5 +1,7 @@
+import { Client, Colors, TextChannel } from "discord.js"
 import fs from "fs"
 import path from "path"
+import { CHANNELS, USERS } from "../constants"
 
 type LogLevel = "debug" | "info" | "warn" | "error"
 
@@ -40,7 +42,7 @@ function log(level: LogLevel, message: string, meta?: unknown) {
 
   const consoleFn =
     level === "debug" ? console.log : (console[level] as typeof console.log)
-  consoleFn(formattedMessage, meta instanceof Error ? meta : meta ?? "")
+  consoleFn(formattedMessage, meta instanceof Error ? meta : (meta ?? ""))
 }
 
 export const logger = {
@@ -50,12 +52,40 @@ export const logger = {
   info(message: string, meta?: unknown) {
     log("info", message, meta)
   },
-  warn(message: string, meta?: unknown) {
-    log("warn", message, meta)
+  warn(client: Client | undefined, message: string, meta?: unknown) {
+    const level = "warn"
+    log(level, message, meta)
+    if (client) {
+      logToSystemLog(client, level, message, meta)
+    }
   },
-  error(message: string, meta?: unknown) {
-    log("error", message, meta)
+  error(client: Client | undefined, message: string, meta?: unknown) {
+    const level = "error"
+    log(level, message, meta)
+    if (client) {
+      logToSystemLog(client, level, message, meta)
+    }
   },
 }
 
+async function logToSystemLog(
+  client: Client,
+  level: LogLevel,
+  message: string,
+  meta?: unknown,
+) {
+  const systemLogChannel = (await client.channels.fetch(
+    CHANNELS.SYSTEMLOG,
+  )) as TextChannel
 
+  await systemLogChannel.send({
+    content: `**${level.toUpperCase()}:** <@${USERS.MOONS}>`,
+    embeds: [
+      {
+        title: message,
+        description: "```" + meta + "```",
+        color: level === "error" ? Colors.Red : Colors.Yellow,
+      },
+    ],
+  })
+}

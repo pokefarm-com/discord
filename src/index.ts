@@ -38,9 +38,7 @@ const eventContext: EventContext = {
 
 for (const event of events) {
   if (event.once) {
-    client.once(event.name, (...args) =>
-      event.execute(...args, eventContext),
-    )
+    client.once(event.name, (...args) => event.execute(...args, eventContext))
   } else {
     client.on(event.name, (...args) => event.execute(...args, eventContext))
   }
@@ -52,15 +50,15 @@ client
     logger.info("Logged in successfully!")
   })
   .catch((error) => {
-    logger.error("Failed to log in", error)
+    logger.error(undefined, "Failed to log in", error)
   })
 
 process.on("unhandledRejection", (error) => {
-  logger.error("Unhandled promise rejection", error)
+  logger.error(client, "Unhandled promise rejection", error)
 })
 
 process.on("uncaughtException", (error) => {
-  logger.error("Uncaught exception", error)
+  logger.error(client, "Uncaught exception", error)
   process.exit(1)
 })
 
