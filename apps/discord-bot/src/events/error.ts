@@ -6,7 +6,7 @@ const handler: EventHandler<Events.Error> = {
   name: Events.Error,
   once: false,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async execute(error: Error, _context: EventContext) {
+  async execute(error: Error, _context: EventContext): Promise<void> {
     logger.error(undefined, "Discord client error", error)
   },
 }

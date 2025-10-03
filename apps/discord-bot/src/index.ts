@@ -51,6 +51,7 @@ client
   })
   .catch((error) => {
     logger.error(undefined, "Failed to log in", error)
+    process.exit(1)
   })
 
 process.on("unhandledRejection", (error) => {

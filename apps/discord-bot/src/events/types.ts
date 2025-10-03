@@ -11,5 +11,5 @@ export interface EventHandler<
 > {
   name: K
   once?: boolean
-  execute: (...args: [...ClientEvents[K], EventContext]) => any
+  execute: (...args: [...ClientEvents[K], EventContext]) => Promise<void> | void
 }

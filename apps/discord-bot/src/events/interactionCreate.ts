@@ -4,7 +4,7 @@ import { logger } from "../util/logger"
 
 const handler: EventHandler<Events.InteractionCreate> = {
   name: Events.InteractionCreate,
-  async execute(interaction: Interaction, { commands }: EventContext) {
+  async execute(interaction: Interaction, { commands }: EventContext): Promise<void> {
     if (!commands) return
 
     if (interaction.isChatInputCommand()) {

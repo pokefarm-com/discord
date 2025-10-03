@@ -5,7 +5,7 @@ import { logger } from "../util/logger"
 const handler: EventHandler<Events.ClientReady> = {
   name: Events.ClientReady,
   once: true,
-  async execute(_client, { client }: EventContext) {
+  async execute(_client, { client }: EventContext): Promise<void> {
     logger.info(`Bot is connected as ${client.user!.tag}`)
   },
 }

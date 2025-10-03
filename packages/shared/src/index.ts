@@ -6,29 +6,39 @@ export class Logger {
     this.context = context;
   }
 
-  info(message: string, ...args: any[]): void {
+  info(message: string, ...args: unknown[]): void {
     console.log(`[INFO]${this.context ? ` [${this.context}]` : ''} ${message}`, ...args);
   }
 
-  error(message: string, error?: any): void {
+  error(message: string, error?: Error | unknown): void {
     console.error(`[ERROR]${this.context ? ` [${this.context}]` : ''} ${message}`, error);
   }
 
-  warn(message: string, ...args: any[]): void {
+  warn(message: string, ...args: unknown[]): void {
     console.warn(`[WARN]${this.context ? ` [${this.context}]` : ''} ${message}`, ...args);
   }
 
-  debug(message: string, ...args: any[]): void {
+  debug(message: string, ...args: unknown[]): void {
     if (process.env.NODE_ENV === 'development') {
       console.debug(`[DEBUG]${this.context ? ` [${this.context}]` : ''} ${message}`, ...args);
     }
   }
 }
 
+// Database configuration interface
+export interface DatabaseConfig {
+  host: string;
+  port: number;
+  user: string;
+  password: string;
+  database: string;
+  ssl?: boolean;
+}
+
 // Database utility
 export class DatabaseConnection {
   private static instance: DatabaseConnection;
-  private connection: any;
+  private connection: unknown | null = null;
 
   private constructor() {}
 
@@ -39,16 +49,21 @@ export class DatabaseConnection {
     return DatabaseConnection.instance;
   }
 
-  async connect(config: any): Promise<void> {
+  async connect(config: DatabaseConfig): Promise<void> {
     // This will be implemented with actual database connection logic
     console.log('Connecting to database...', config);
+    // TODO: Implement actual connection logic and store connection
   }
 
   async disconnect(): Promise<void> {
     console.log('Disconnecting from database...');
+    if (this.connection) {
+      // TODO: Implement actual disconnection logic
+      this.connection = null;
+    }
   }
 
-  getConnection(): any {
+  getConnection(): unknown | null {
     return this.connection;
   }
 }

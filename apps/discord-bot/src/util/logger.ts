@@ -12,12 +12,27 @@ if (!fs.existsSync(logsDir)) {
 }
 
 function getLogFilePath(date = new Date()) {
-  const formattedDate = date.toISOString().split("T")[0]
+  // Ensure we're working with UTC time
+  const utcDate = new Date(date.getTime() + (date.getTimezoneOffset() * 60000))
+  const formattedDate = utcDate.toISOString().split("T")[0]
   return path.join(logsDir, `${formattedDate}.log`)
 }
 
 const logFilePath = getLogFilePath()
 const logStream = fs.createWriteStream(logFilePath, { flags: "a" })
+
+// Ensure stream is properly closed on process exit
+process.on('exit', () => {
+  logStream.end()
+})
+
+process.on('SIGINT', () => {
+  logStream.end()
+})
+
+process.on('SIGTERM', () => {
+  logStream.end()
+})
 
 function serializeMeta(meta: unknown) {
   if (!meta) return ""
@@ -35,6 +50,7 @@ function serializeMeta(meta: unknown) {
 }
 
 function log(level: LogLevel, message: string, meta?: unknown) {
+  // Use UTC timestamp explicitly
   const timestamp = new Date().toISOString()
   const formattedMessage = `[${timestamp}] [${level.toUpperCase()}] ${message}`
 
