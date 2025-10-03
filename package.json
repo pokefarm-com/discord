@@ -1,0 +1,30 @@
+{
+  "name": "pfq-monorepo",
+  "version": "1.0.0",
+  "description": "PFQ Discord Bot, API, and Dashboard Monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "discord:dev": "pnpm --filter discord-bot dev",
+    "discord:deploy-cmds": "pnpm --filter discord-bot deploy-cmds",
+    "discord:deploy-cmds:prod": "pnpm --filter discord-bot deploy-cmds:prod",
+    "discord:start": "pnpm --filter discord-bot start",
+    "discord:build": "pnpm --filter discord-bot build",
+    "discord:clean": "pnpm --filter discord-bot clean",
+    "discord:type-check": "pnpm --filter discord-bot type-check"
+  },
+  "devDependencies": {
+    "@turbo/gen": "^1.10.12",
+    "prettier": "^3.6.2",
+    "turbo": "^1.10.12",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "pnpm": ">=8.0.0",
+    "npm": "0"
+  },
+  "engineStrict": true
+}
