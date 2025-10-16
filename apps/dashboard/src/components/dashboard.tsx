@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from "react"
 import { useTheme } from "next-themes"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Search, MoreHorizontal, Calendar, Filter, Sun, Moon } from "lucide-react"
-import { ReportDetailView } from "./detail-view"
+import { Search, MoreHorizontal, Calendar, Filter, Sun, Moon, User } from "lucide-react"
 
 type ReportStatus = "open" | "assigned" | "inactionable" | "closed"
 
@@ -33,7 +33,7 @@ interface Report {
 
 const sampleReports: Report[] = [
   {
-    id: "RPT-8288",
+    id: "8288",
     reportedUser: {
       name: "Dummy User",
       username: "@dummyuser",
@@ -51,7 +51,7 @@ const sampleReports: Report[] = [
     reason: "Inappropriate profile picture",
   },
   {
-    id: "RPT-8287",
+    id: "8287",
     reportedUser: {
       name: "Dummy User",
       username: "@dummyuser",
@@ -68,7 +68,7 @@ const sampleReports: Report[] = [
     reason: "Scam or fraud attempt",
   },
   {
-    id: "RPT-8286",
+    id: "8286",
     reportedUser: {
       name: "Dummy User",
       username: "@dummyuser",
@@ -86,7 +86,7 @@ const sampleReports: Report[] = [
     reason: "Hate speech",
   },
   {
-    id: "RPT-8285",
+    id: "8285",
     reportedUser: {
       name: "Dummy User",
       username: "@dummyuser",
@@ -100,7 +100,7 @@ const sampleReports: Report[] = [
     reason: "Impersonation",
   },
   {
-    id: "RPT-8284",
+    id: "8284",
     reportedUser: {
       name: "Dummy User",
       username: "@dummyuser",
@@ -122,13 +122,13 @@ const sampleReports: Report[] = [
 const getStatusColor = (status: ReportStatus) => {
   switch (status) {
     case "open":
-      return "bg-primary/10 text-primary border-primary/20"
+      return "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800"
     case "assigned":
-      return "bg-warning/10 text-warning border-warning/20"
+      return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800"
     case "inactionable":
-      return "bg-muted-foreground/10 text-muted-foreground border-muted-foreground/20"
+      return "bg-gray-50 text-gray-700 border-gray-200 dark:bg-gray-950 dark:text-gray-300 dark:border-gray-800"
     case "closed":
-      return "bg-success/10 text-success border-success/20"
+      return "bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800"
   }
 }
 
@@ -149,8 +149,8 @@ export function ReportDashboard() {
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState<string>("all")
   const [dateFilter, setDateFilter] = useState<string>("all")
-  const [selectedReport, setSelectedReport] = useState<Report | null>(null)
   const { theme, setTheme } = useTheme()
+  const router = useRouter()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -173,24 +173,22 @@ export function ReportDashboard() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="flex h-14 items-center gap-4 px-6">
-          <div className="flex items-center gap-2">
-            <div className="h-6 w-6 rounded bg-primary" />
-            <span className="font-semibold text-foreground">ModPanel</span>
+      <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="flex h-16 items-center gap-4 px-6">
+          <div className="flex items-center gap-3">
+            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-sm">M</span>
+            </div>
+            <div>
+              <span className="font-bold text-lg text-foreground">ModPanel</span>
+            </div>
           </div>
           <nav className="flex items-center gap-6 text-sm">
             <a href="#" className="text-foreground font-medium">
               Reports
             </a>
             <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-              Users
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
               Analytics
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-              Settings
             </a>
           </nav>
           <div className="ml-auto">
@@ -221,14 +219,14 @@ export function ReportDashboard() {
         </div>
 
         {/* Filters */}
-        <div className="mb-6 flex flex-wrap items-center gap-3">
-          <div className="relative flex-1 min-w-[300px] max-w-md">
+        <div className="mb-8 flex flex-wrap items-center gap-4">
+          <div className="relative flex-1 min-w-[320px] max-w-lg">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search reports, users, or IDs..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 bg-card border-border text-foreground placeholder:text-muted-foreground"
+              className="pl-10 pr-4 h-11 bg-card border-border text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/20 transition-all"
             />
           </div>
 
@@ -263,46 +261,17 @@ export function ReportDashboard() {
           </Button>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-card border border-border rounded-lg p-4">
-            <div className="text-muted-foreground text-sm mb-1">Total Reports</div>
-            <div className="text-2xl font-semibold text-foreground">{sampleReports.length}</div>
-          </div>
-          <div className="bg-card border border-border rounded-lg p-4">
-            <div className="text-muted-foreground text-sm mb-1">Open</div>
-            <div className="text-2xl font-semibold text-primary">
-              {sampleReports.filter((r) => r.status === "open").length}
-            </div>
-          </div>
-          <div className="bg-card border border-border rounded-lg p-4">
-            <div className="text-muted-foreground text-sm mb-1">Assigned</div>
-            <div className="text-2xl font-semibold text-warning">
-              {sampleReports.filter((r) => r.status === "assigned").length}
-            </div>
-          </div>
-          <div className="bg-card border border-border rounded-lg p-4">
-            <div className="text-muted-foreground text-sm mb-1">Closed Today</div>
-            <div className="text-2xl font-semibold text-success">
-              {sampleReports.filter((r) => r.status === "closed").length}
-            </div>
-          </div>
-        </div>
-
-        {/* Reports Table */}
-        <div className="bg-card border border-border rounded-lg overflow-hidden">
+        {/* Desktop Table View */}
+        <div className="hidden md:block bg-card border border-border rounded-xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-border bg-muted/30">
                   <th className="text-left py-3 px-4 text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Report ID
+                    ID
                   </th>
                   <th className="text-left py-3 px-4 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Reported User
-                  </th>
-                  <th className="text-left py-3 px-4 text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Reported By
                   </th>
                   <th className="text-left py-3 px-4 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Reason
@@ -316,9 +285,6 @@ export function ReportDashboard() {
                   <th className="text-left py-3 px-4 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Timestamp
                   </th>
-                  <th className="text-left py-3 px-4 text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Closed
-                  </th>
                   <th className="w-12"></th>
                 </tr>
               </thead>
@@ -326,8 +292,8 @@ export function ReportDashboard() {
                 {filteredReports.map((report) => (
                   <tr
                     key={report.id}
-                    onClick={() => setSelectedReport(report)}
-                    className="hover:bg-muted/20 transition-colors cursor-pointer"
+                    onClick={() => router.push(`/report/${report.id}`)}
+                    className="hover:bg-muted/30 hover:shadow-sm transition-all duration-200 cursor-pointer group"
                   >
                     <td className="py-4 px-4">
                       <span className="font-mono text-sm text-foreground">{report.id}</span>
@@ -337,14 +303,6 @@ export function ReportDashboard() {
                         <div>
                           <div className="text-sm font-medium text-foreground">{report.reportedUser.name}</div>
                           <div className="text-xs text-muted-foreground">{report.reportedUser.username}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="py-4 px-4">
-                      <div className="flex items-center gap-3">
-                        <div>
-                          <div className="text-sm font-medium text-foreground">{report.reportedBy.name}</div>
-                          <div className="text-xs text-muted-foreground">{report.reportedBy.username}</div>
                         </div>
                       </div>
                     </td>
@@ -369,9 +327,6 @@ export function ReportDashboard() {
                       <span className="text-sm text-muted-foreground">{report.timestamp}</span>
                     </td>
                     <td className="py-4 px-4">
-                      <span className="text-sm text-muted-foreground">{report.closedTime || "—"}</span>
-                    </td>
-                    <td className="py-4 px-4">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -382,7 +337,6 @@ export function ReportDashboard() {
                           <DropdownMenuItem>View Details</DropdownMenuItem>
                           <DropdownMenuItem>Assign to Me</DropdownMenuItem>
                           <DropdownMenuItem>Mark as Closed</DropdownMenuItem>
-                          <DropdownMenuItem className="text-destructive">Delete Report</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </td>
@@ -407,9 +361,86 @@ export function ReportDashboard() {
             </div>
           </div>
         </div>
+
+        {/* Mobile Card View */}
+        <div className="md:hidden space-y-4">
+          {filteredReports.map((report) => (
+            <div
+              key={report.id}
+              onClick={() => router.push(`/report/${report.id}`)}
+              className="bg-card border border-border rounded-xl p-4 hover:shadow-md transition-all duration-200 cursor-pointer"
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <User className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-foreground">{report.reportedUser.name}</div>
+                    <div className="text-xs text-muted-foreground">{report.reportedUser.username}</div>
+                  </div>
+                </div>
+                <Badge variant="outline" className={`${getStatusColor(report.status)} font-medium`}>
+                  {getStatusLabel(report.status)}
+                </Badge>
+              </div>
+              
+              <div className="mb-3">
+                <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Report ID</div>
+                <div className="font-mono text-sm text-foreground">#{report.id}</div>
+              </div>
+              
+              <div className="mb-3">
+                <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Reason</div>
+                <div className="text-sm text-foreground">{report.reason}</div>
+              </div>
+              
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <span>{report.timestamp}</span>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem>View Details</DropdownMenuItem>
+                    <DropdownMenuItem>Assign to Me</DropdownMenuItem>
+                    <DropdownMenuItem>Mark as Closed</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+          <div className="bg-card border border-border rounded-xl p-6 hover:shadow-md transition-shadow">
+            <div className="text-muted-foreground text-sm mb-2 font-medium">Total Reports</div>
+            <div className="text-3xl font-bold text-foreground">{sampleReports.length}</div>
+          </div>
+          <div className="bg-card border border-border rounded-xl p-6 hover:shadow-md transition-shadow">
+            <div className="text-muted-foreground text-sm mb-2 font-medium">Open</div>
+            <div className="text-3xl font-bold">
+              {sampleReports.filter((r) => r.status === "open").length}
+            </div>
+          </div>
+          <div className="bg-card border border-border rounded-xl p-6 hover:shadow-md transition-shadow">
+            <div className="text-muted-foreground text-sm mb-2 font-medium">Assigned</div>
+            <div className="text-3xl font-bold">
+              {sampleReports.filter((r) => r.status === "assigned").length}
+            </div>
+          </div>
+          <div className="bg-card border border-border rounded-xl p-6 hover:shadow-md transition-shadow">
+            <div className="text-muted-foreground text-sm mb-2 font-medium">Closed Today</div>
+            <div className="text-3xl font-bold">
+              {sampleReports.filter((r) => r.status === "closed").length}
+            </div>
+          </div>
+        </div>
       </main>
 
-      {selectedReport && <ReportDetailView report={selectedReport} onClose={() => setSelectedReport(null)} />}
     </div>
   )
 }
