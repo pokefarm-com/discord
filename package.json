@@ -8,13 +8,17 @@
     "packages/*"
   ],
   "scripts": {
-    "discord:dev": "pnpm --filter discord-bot dev",
-    "discord:deploy-cmds": "pnpm --filter discord-bot deploy-cmds",
-    "discord:deploy-cmds:prod": "pnpm --filter discord-bot deploy-cmds:prod",
-    "discord:start": "pnpm --filter discord-bot start",
-    "discord:build": "pnpm --filter discord-bot build",
-    "discord:clean": "pnpm --filter discord-bot clean",
-    "discord:type-check": "pnpm --filter discord-bot type-check"
+    "discord:dev": "pnpm --filter discord dev",
+    "discord:deploy-cmds": "pnpm --filter discord deploy-cmds",
+    "discord:deploy-cmds:prod": "pnpm --filter discord deploy-cmds:prod",
+    "discord:start": "pnpm --filter discord start",
+    "discord:build": "pnpm --filter discord build",
+    "discord:clean": "pnpm --filter discord clean",
+    "discord:type-check": "pnpm --filter discord type-check",
+    "web:dev": "pnpm --filter dashboard dev",
+    "web:build": "pnpm --filter dashboard build",
+    "web:start": "pnpm --filter dashboard start",
+    "web:lint": "pnpm --filter dashboard lint"
   },
   "devDependencies": {
     "@turbo/gen": "^1.10.12",
